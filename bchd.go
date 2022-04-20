@@ -5,7 +5,9 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"github.com/gcash/bchd/pingserver"
 	"net"
 	"net/http"
 	_ "net/http/pprof"
@@ -346,6 +348,11 @@ func main() {
 			os.Exit(0)
 		}
 	}
+
+	//Ekliptor> monitoring via ping
+	ping := pingserver.NewPingServer(context.Background(), 2244)
+	go ping.StartServer()
+	//Ekliptor< monitoring via ping
 
 	// Work around defer not working after os.Exit()
 	if err := bchdMain(nil); err != nil {
